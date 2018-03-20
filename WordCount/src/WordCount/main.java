@@ -7,6 +7,5 @@ public class main {
         System.out.println("请正确输入指令");
         Statistics sta=new Statistics();
         sta.ReadOrder();
-
     }
 }

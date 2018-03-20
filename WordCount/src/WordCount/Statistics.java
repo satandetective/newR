@@ -120,11 +120,17 @@ public class Statistics {
                         if(orderSet.get(i).equals("-o"))
                         {
                             PrintStream out = System.out;// 保存原输出流
+                            System.out.println("指令正确，结果已存入相应文件");
                             PrintStream ps=new PrintStream(orderSet.get(orderSet.size()-1));// 创建文件输出流1
                             System.setOut(ps);// 设置使用新的输出流
                         }
                     }
+                    System.out.println("指令正确，结果已存入相应文件");
+                    PrintStream ps1=new PrintStream("result.txt");// 创建文件输出流2
+                    System.setOut(ps1);// 设置使用新的输出流
                     System.out.println(result);
+                    Scanner scan1=new Scanner(System.in);
+                    String str=scan.nextLine();
                     read.close();
                 }
                 else{
@@ -183,13 +189,19 @@ public class Statistics {
                         if(orderSet.get(i).equals("-o"))
                         {
                             PrintStream out = System.out;// 保存原输出流
+                            System.out.println("指令正确，结果已存入相应文件");
                             PrintStream ps=new PrintStream(orderSet.get(orderSet.size()-1));// 创建文件输出流1
                             System.setOut(ps);// 设置使用新的输出流
                         }
                     }
                     read.close();
                 }
+                System.out.println("指令正确，结果已存入相应文件");
+                PrintStream ps1=new PrintStream("result.txt");// 创建文件输出流2
+                System.setOut(ps1);// 设置使用新的输出流
                 System.out.println(result);
+                Scanner scan1=new Scanner(System.in);
+                String str=scan.nextLine();
 
             }
         } catch (Exception e) {
