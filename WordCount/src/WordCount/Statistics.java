@@ -6,10 +6,12 @@ import java.util.Scanner;
 
 public class Statistics {
 
-    public  static void ReadOrder()
+
+    public ArrayList<File> wjList;
+    public void ReadOrder()
     {
         try {
-
+            wjList = new ArrayList<>();
             ArrayList<String> orderSet=new ArrayList<>();//存储指令集
             ArrayList<String> stopSet=new ArrayList<>();//存储停用词
             Scanner scan=new Scanner(System.in);
@@ -70,13 +72,13 @@ public class Statistics {
                     String stops[]=lineTxt.split(" ");
                     for(int i=0;i<stops.length;i++)
                     {
-                        stopSet.add(strs[i]);
+                        stopSet.add(stops[i]);
                     }
                 }
             }
             if(!isAll)
             {
-                String filePath="./"+orderSet.get(count+1);
+                String filePath=orderSet.get(count+1);
                 File file=new File(filePath);
                 if(input1&&file.isFile() && file.exists()){ //判断文件是否存在
                     InputStreamReader read = new InputStreamReader(new FileInputStream(file),encoding);//考虑到编码格式
@@ -108,13 +110,13 @@ public class Statistics {
                     for(int i=0;i<orderSet.size();i++)
                     {
                         if(orderSet.get(i).equals("-c"))
-                            result+=(orderSet.get(count+1) + ",字符数：" + countChar+"\n");
+                            result+=(orderSet.get(count+1) + ",字符数：" + countChar+"\r\n");
                         if(orderSet.get(i).equals("-w"))
-                            result+=(orderSet.get(count+1)+",单词数："+countword+"\n");
+                            result+=(orderSet.get(count+1)+",单词数："+countword+"\r\n");
                         if(orderSet.get(i).equals("-l"))
-                            result+=(orderSet.get(count+1)+",行数："+countLine+"\n");
+                            result+=(orderSet.get(count+1)+",行数："+countLine+"\r\n");
                         if(orderSet.get(i).equals("-a"))
-                            result+=(orderSet.get(count+1)+",代码行/空行/注释行："+codeLine+"/"+noneLine+"/"+noteLine+"\n");
+                            result+=(orderSet.get(count+1)+",代码行/空行/注释行："+codeLine+"/"+noneLine+"/"+noteLine+"\r\n");
                         if(orderSet.get(i).equals("-o"))
                         {
                             PrintStream out = System.out;// 保存原输出流
@@ -131,16 +133,7 @@ public class Statistics {
             }
             else//指令中存在“-s”
             {
-                File file1=new File("./");
-                File[] fileList = file1.listFiles();
-
-                ArrayList<File> wjList = new ArrayList<File>();//新建一个文件集合
-                for (int i = 0; i < fileList.length; i++) {
-                    if (fileList[i].isFile()) {//判断是否为文件
-                        if(fileList[i].getName().endsWith(".c"))
-                            wjList.add(fileList[i]);//存储符合条件的文件
-                    }
-                }
+                traverseFolder2("./");
                 for(int j=0;j<wjList.size();j++)
                 {
                     int countChar1=0;//字符数
@@ -180,13 +173,13 @@ public class Statistics {
                     for(int i=0;i<orderSet.size();i++)
                     {
                         if(orderSet.get(i).equals("-c"))
-                            result+=(wjList.get(j).getName() + ",字符数：" + countChar1+"\n");
+                            result+=(wjList.get(j).getName() + ",字符数：" + countChar1+"\r\n");
                         if(orderSet.get(i).equals("-w"))
-                            result+=(wjList.get(j).getName()+",单词数："+countword1+"\n");
+                            result+=(wjList.get(j).getName()+",单词数："+countword1+"\r\n");
                         if(orderSet.get(i).equals("-l"))
-                            result+=(wjList.get(j).getName()+",行数："+countLine1+"\n");
+                            result+=(wjList.get(j).getName()+",行数："+countLine1+"\r\n");
                         if(orderSet.get(i).equals("-a"))
-                            result+=(wjList.get(j).getName()+",代码行/空行/注释行："+codeLine1+"/"+noneLine1+"/"+noteLine1+"\n");
+                            result+=(wjList.get(j).getName()+",代码行/空行/注释行："+codeLine1+"/"+noneLine1+"/"+noteLine1+"\r\n");
                         if(orderSet.get(i).equals("-o"))
                         {
                             PrintStream out = System.out;// 保存原输出流
@@ -205,10 +198,24 @@ public class Statistics {
         }
     }
 
-
-    public static void main(String[] args)
+    public void traverseFolder2(String path)//递归处理文件
     {
-        ReadOrder();
+        File file = new File(path);
+        if (file.exists()) {
+            File[] files = file.listFiles();
+            for (File file2 : files) {
+                if (file2.isDirectory()) {
+                    traverseFolder2(file2.getAbsolutePath());
+                } else {
+                    if(file2.getName().endsWith(".c")) {
+                        wjList.add(file2);//存储符合条件的文件
+                    }
+                }
+                }
+            }
 
     }
+
+
+
 }
