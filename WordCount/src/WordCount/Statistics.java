@@ -37,6 +37,7 @@ public class Statistics {
             int count=0;//用来寻找文件在指令中的位置
             boolean isAll=false;//用来判断是否有“-s”命令
             boolean isStop=false;//用来判断是否有“-e”命令
+            boolean isOut=false;//用来判断是否有“-o”命令
             String stopath="";
             String result="";
             for(int i=0;i<orderSet.size();i++)
@@ -60,6 +61,8 @@ public class Statistics {
                     stopath=orderSet.get(i+1);
                     count+=2;
                 }
+                if(orderSet.get(i).equals("-o"))
+                    isOut=true;
             }
             if(isStop)//存在“-e”命令
             {
@@ -117,17 +120,21 @@ public class Statistics {
                             result+=(orderSet.get(count+1)+",行数："+countLine+"\r\n");
                         if(orderSet.get(i).equals("-a"))
                             result+=(orderSet.get(count+1)+",代码行/空行/注释行："+codeLine+"/"+noneLine+"/"+noteLine+"\r\n");
-                        if(orderSet.get(i).equals("-o"))
-                        {
-                            PrintStream out = System.out;// 保存原输出流
-                            System.out.println("指令正确，结果已存入相应文件");
-                            PrintStream ps=new PrintStream(orderSet.get(orderSet.size()-1));// 创建文件输出流1
-                            System.setOut(ps);// 设置使用新的输出流
-                        }
+
                     }
-                    System.out.println("指令正确，结果已存入相应文件");
-                    PrintStream ps1=new PrintStream("result.txt");// 创建文件输出流2
-                    System.setOut(ps1);// 设置使用新的输出流
+                    if(isOut)
+                    {
+                        PrintStream out = System.out;// 保存原输出流
+                        System.out.println("指令正确，结果已存入相应文件");
+                        PrintStream ps=new PrintStream(orderSet.get(orderSet.size()-1));// 创建文件输出流1
+                        System.setOut(ps);// 设置使用新的输出流
+                    }
+                    else
+                    {
+                        System.out.println("指令正确，结果已存入相应文件");
+                        PrintStream ps1=new PrintStream("result.txt");// 创建文件输出流2
+                        System.setOut(ps1);// 设置使用新的输出流
+                    }
                     System.out.println(result);
                     Scanner scan1=new Scanner(System.in);
                     String str=scan.nextLine();
@@ -186,19 +193,22 @@ public class Statistics {
                             result+=(wjList.get(j).getName()+",行数："+countLine1+"\r\n");
                         if(orderSet.get(i).equals("-a"))
                             result+=(wjList.get(j).getName()+",代码行/空行/注释行："+codeLine1+"/"+noneLine1+"/"+noteLine1+"\r\n");
-                        if(orderSet.get(i).equals("-o"))
-                        {
-                            PrintStream out = System.out;// 保存原输出流
-                            System.out.println("指令正确，结果已存入相应文件");
-                            PrintStream ps=new PrintStream(orderSet.get(orderSet.size()-1));// 创建文件输出流1
-                            System.setOut(ps);// 设置使用新的输出流
-                        }
+                    }
+                    if(isOut)
+                    {
+                        PrintStream out = System.out;// 保存原输出流
+                        System.out.println("指令正确，结果已存入相应文件");
+                        PrintStream ps=new PrintStream(orderSet.get(orderSet.size()-1));// 创建文件输出流1
+                        System.setOut(ps);// 设置使用新的输出流
+                    }
+                    else
+                    {
+                        System.out.println("指令正确，结果已存入相应文件");
+                        PrintStream ps1=new PrintStream("result.txt");// 创建文件输出流2
+                        System.setOut(ps1);// 设置使用新的输出流
                     }
                     read.close();
                 }
-                System.out.println("指令正确，结果已存入相应文件");
-                PrintStream ps1=new PrintStream("result.txt");// 创建文件输出流2
-                System.setOut(ps1);// 设置使用新的输出流
                 System.out.println(result);
                 Scanner scan1=new Scanner(System.in);
                 String str=scan.nextLine();
